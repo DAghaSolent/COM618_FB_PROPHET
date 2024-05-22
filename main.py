@@ -15,11 +15,11 @@ df = pd.read_excel(r'alcoholspecificdeaths2021.xlsx', sheet_name='Table 1', skip
 df.reset_index(inplace=True)
 
 
-def model_forecast_deaths_UK_10_years():
-    # Defining the gender categories for forecasting future UK deaths for.
-    gender_categories = ['Females', 'Males', 'Persons']
+def model_forecast_deaths_uk_10_years():
+    # Defining the genders for forecasting future UK deaths for.
+    genders = ['Females', 'Males', 'Persons']
 
-    for gender_category in gender_categories:
+    for gender in genders:
         # Creating and initialising the FB Prophet Model
         prophet = Prophet(
             daily_seasonality=False,
@@ -31,10 +31,10 @@ def model_forecast_deaths_UK_10_years():
 
         # Creating a new Data Frame and Filtering the region since I am only interested in UK and the current gender
         # category
-        df_filtered = df[(df['Area name'] == 'United Kingdom') & (df['Sex'] == gender_category)]
+        df_filtered = df[(df['Area name'] == 'United Kingdom') & (df['Sex'] == gender)]
 
         # Printing and displaying actual number of deaths before forecasting and predicting future number of deaths
-        print(f"Actual number of deaths data for gender: {gender_category}")
+        print(f"Actual number of deaths data for gender: {gender}")
         print(df_filtered[['Year [note 3]', 'Number of deaths']])
 
         # Renaming and assigning my columns to specified column names to match with FB Prophet requirements and work
@@ -61,12 +61,14 @@ def model_forecast_deaths_UK_10_years():
         fig = plot_plotly(prophet, forecast)
         fig.update_layout(xaxis_title="Year",
                           yaxis_title="Number of Deaths",
-                          title_text=f"FB Prophet Prediction for Alcohol Specific Deaths within the UK - {gender_category}"
+                          title_text=f"FB Prophet Prediction for Alcohol Specific Deaths within the UK - {gender}"
                           )
         fig.show()
 
         # Outputting and displaying the forecasts to the console.
-        print(f"Forecasted Alcohol Specific Deaths within the UK for Gender: {gender_category}")
+        print(f"Forecasted Alcohol Specific Deaths within the UK for Gender: {gender}")
         print(forecast[['ds', 'yhat']].rename(columns={'ds': 'Date', 'yhat': 'Number of Deaths'}))
 
         print("_______________________________________________________________________________________________________")
+
+model_forecast_deaths_uk_10_years()
