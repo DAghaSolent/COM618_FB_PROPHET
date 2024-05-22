@@ -30,7 +30,6 @@ def model_forecast_deaths_uk_10_years():
         )
 
         # Creating a new Data Frame and Filtering the region since I am only interested in UK and the current gender
-        # category
         df_filtered = df[(df['Area name'] == 'United Kingdom') & (df['Sex'] == gender)]
 
         # Printing and displaying actual number of deaths before forecasting and predicting future number of deaths
@@ -51,7 +50,6 @@ def model_forecast_deaths_uk_10_years():
         future = prophet.make_future_dataframe(periods=10, freq='YE')
 
         # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each gender
-        # category.
         forecast = prophet.predict(future)
 
         # Rounding up or down the forecast values to the nearest whole number
@@ -71,4 +69,67 @@ def model_forecast_deaths_uk_10_years():
 
         print("_______________________________________________________________________________________________________")
 
-model_forecast_deaths_uk_10_years()
+
+def model_forecast_deaths_countries_that_make_up_uk():
+    # Defining the countries that make up UK for forecasting and predicting number of deaths for these countries.
+    countries = ['England', 'Scotland', 'Northern Ireland', 'Wales']
+
+    # Since I am interested in seeing all the separate genders forecasted number of deaths within countries I have
+    # created a genders list to allow me to filter and forecast each gender within the countries
+    genders = ['Females', 'Males', 'Persons']
+
+    # looping through each country within country_categories
+    for country in countries:
+        # looping through each gender in gender categories within each country of country categories
+        for gender in genders:
+            # Creating and initialising the FB Prophet Model
+            prophet = Prophet(
+                daily_seasonality=False,
+                yearly_seasonality=True,
+                weekly_seasonality=False,
+                changepoint_prior_scale=0.05,
+                seasonality_prior_scale=10.0
+            )
+
+            # Creating a dataframe and filtering the current country with the current gender.
+            df_filtered = df[(df['Area name'] == country) & (df['Sex'] == gender)]
+
+            # Printing and displaying the actual number of deaths for the current country and gender
+            print(f"Actual number of deaths for gender: {gender} in country: {country}")
+            print(df_filtered[['Year [note 3]', 'Number of deaths']])
+
+            # Renaming and assigning my columns to specified column names to match with FB Prophet requirements and work
+            # with the FB Prophet model successfully.
+            df_filtered = df_filtered.rename(columns={'Year [note 3]': 'ds', 'Number of deaths': 'y'})
+
+            # Convert 'ds' which represents the date column to datetime so that it can be read by the fb prophet model.
+            df_filtered['ds'] = pd.to_datetime(df_filtered['ds'].astype(str), format='%Y')
+
+            # Fitting the model onto my dataframe containing my dataset.
+            prophet.fit(df_filtered)
+
+            # Creating a dataframe to be used for the prediction forecasting
+            future = prophet.make_future_dataframe(periods=10, freq='YE')
+
+            # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each
+            # gender within each country that makes up the United Kingdom
+            forecast = prophet.predict(future)
+
+            # Rounding up or down the forecast values to the nearest whole number
+            forecast['yhat'] = forecast['yhat'].round()
+
+            #Plot the forecasts that were made by FB Prophet and displaying them to the user using plotly.
+            fig = plot_plotly(prophet, forecast)
+            fig.update_layout(xaxis_title="Year",
+                              yaxis_title="Number of Deaths",
+                              title_text=f"FB Prophet Prediction for Alcohol Specific Deaths for Gender: {gender} in "
+                                         f"Country: {country}"
+                              )
+            fig.show()
+
+            # Outputting and displaying the forecasts to the console.
+            print(f"Forecasted Alcohol Specific Deaths for Gender: {gender} in Country: {country}")
+            print(forecast[['ds', 'yhat']].rename(columns={'ds': 'Date', 'yhat': 'Number of Deaths'}))
+            print("___________________________________________________________________________________________________")
+
+model_forecast_deaths_countries_that_make_up_uk()
