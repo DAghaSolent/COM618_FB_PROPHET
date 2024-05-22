@@ -14,10 +14,11 @@ df = pd.read_excel(r'alcoholspecificdeaths2021.xlsx', sheet_name='Table 1', skip
 # Resetting and clearing the data to be processed for the Facebook Prophet Method
 df.reset_index(inplace=True)
 
+# Defining a gender list that will be utilised in all the below forecasting prediction FB Prophet methods
+genders = ['Females', 'Males', 'Persons']
+
 
 def model_forecast_deaths_uk_10_years():
-    # Defining the genders for forecasting future UK deaths for.
-    genders = ['Females', 'Males', 'Persons']
 
     for gender in genders:
         # Creating and initialising the FB Prophet Model
@@ -34,7 +35,7 @@ def model_forecast_deaths_uk_10_years():
 
         # Printing and displaying actual number of deaths before forecasting and predicting future number of deaths
         print(f"Actual number of deaths data for gender: {gender}")
-        print(df_filtered[['Year [note 3]', 'Number of deaths']])
+        print(df_filtered[['Year [note 3]', 'Number of deaths']].rename(columns={'Year [note 3]': 'Year'}))
 
         # Renaming and assigning my columns to specified column names to match with FB Prophet requirements and work
         # with the FB Prophet model successfully.
@@ -74,10 +75,6 @@ def model_forecast_deaths_countries_that_make_up_uk():
     # Defining the countries that make up UK for forecasting and predicting number of deaths for these countries.
     countries = ['England', 'Scotland', 'Northern Ireland', 'Wales']
 
-    # Since I am interested in seeing all the separate genders forecasted number of deaths within countries I have
-    # created a genders list to allow me to filter and forecast each gender within the countries
-    genders = ['Females', 'Males', 'Persons']
-
     # looping through each country within country_categories
     for country in countries:
         # looping through each gender in gender categories within each country of country categories
@@ -96,7 +93,7 @@ def model_forecast_deaths_countries_that_make_up_uk():
 
             # Printing and displaying the actual number of deaths for the current country and gender
             print(f"Actual number of deaths for gender: {gender} in country: {country}")
-            print(df_filtered[['Year [note 3]', 'Number of deaths']])
+            print(df_filtered[['Year [note 3]', 'Number of deaths']].rename(columns={'Year [note 3]': 'Year'}))
 
             # Renaming and assigning my columns to specified column names to match with FB Prophet requirements and work
             # with the FB Prophet model successfully.
