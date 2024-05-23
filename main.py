@@ -249,4 +249,33 @@ def model_forecast_deaths_for_age_groups_tbl2():
             print(forecast[['ds', 'yhat']].rename(columns={'ds': 'Date', 'yhat': 'Number of Deaths'}))
             print("___________________________________________________________________________________________________")
 
-model_forecast_deaths_for_age_groups_tbl2()
+def menu():
+    menu_input = input("Please select from one of the model forecasting category options below\n"
+                       "[1] Forecasting Prediction the number of deaths for each gender within the United Kingdom for "
+                       "the next 10 years.\n"
+                       
+                       "[2] Forecasting Prediction the number of deaths for each gender within countries that make up"
+                       "the United Kingdom for the next 10 years.\n"
+                       
+                       "[3] Forecasting Prediction the number of deaths for each gender for regions within England for "
+                       "the next 10 years.\n"
+                       
+                       "[4] Forecasting Prediction the number of deaths for each gender and age group within the United"
+                       " Kingdom for the next 10 years\n"
+                       
+                       "Menu Selection: "
+                       )
+
+    if menu_input == "1":
+        model_forecast_deaths_uk_10_years_tbl1()
+    elif menu_input == "2":
+        model_forecast_deaths_countries_that_make_up_uk_tbl1()
+    elif menu_input == "3":
+        model_forecast_deaths_regions_within_england_tbl1()
+    elif menu_input == "4":
+        model_forecast_deaths_for_age_groups_tbl2()
+    else:
+        print("Invalid Input")
+        menu()
+
+menu()
