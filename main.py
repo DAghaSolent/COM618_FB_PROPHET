@@ -50,7 +50,7 @@ def model_forecast_deaths_uk_10_years_tbl1():
         prophet.fit(df_filtered)
 
         # Creating a dataframe to be used for the prediction forecasting
-        future = prophet.make_future_dataframe(periods=10, freq='YE')
+        future = prophet.make_future_dataframe(periods=10, freq='Y')
 
         # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each gender
         forecast = prophet.predict(future)
@@ -108,7 +108,7 @@ def model_forecast_deaths_countries_that_make_up_uk_tbl1():
             prophet.fit(df_filtered)
 
             # Creating a dataframe to be used for the prediction forecasting
-            future = prophet.make_future_dataframe(periods=10, freq='YE')
+            future = prophet.make_future_dataframe(periods=10, freq='Y')
 
             # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each
             # gender within each country that makes up the United Kingdom
@@ -167,7 +167,7 @@ def model_forecast_deaths_regions_within_england_tbl1():
             prophet.fit(df_filtered)
 
             # Creating a dataframe to be used for the prediction forecasting
-            future = prophet.make_future_dataframe(periods=10, freq='YE')
+            future = prophet.make_future_dataframe(periods=10, freq='Y')
 
             # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each
             # gender within each region within England.
@@ -226,7 +226,7 @@ def model_forecast_deaths_for_age_groups_tbl2():
             prophet.fit(df_filtered)
 
             # Creating a dataframe to be used for the prediction forecasting
-            future = prophet.make_future_dataframe(periods=10, freq='YE')
+            future = prophet.make_future_dataframe(periods=10, freq='Y')
 
             # Passing the future Dataframe to generate a forecast prediction on deaths for the next 10 years for each
             # gender within each region within England.
