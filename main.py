@@ -22,7 +22,6 @@ genders = ['Females', 'Males', 'Persons']
 
 
 def model_forecast_deaths_uk_10_years_tbl1():
-
     for gender in genders:
         # Creating and initialising the FB Prophet Model
         prophet = Prophet(
