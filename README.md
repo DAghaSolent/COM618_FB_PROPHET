@@ -5,4 +5,4 @@ GitHub Repository for COM618 FB Prophet model which I created to forecast and pr
 - pip install pandas
 - pip install prophet
 - pip install plotly
-
+- pip install openpxyl
